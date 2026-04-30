@@ -86,7 +86,17 @@ def pending_for_cron(
     if is_first_run and initial_cron_behavior == "latest-only":
         return releases[:1]
 
+    # 先用 latest_processed_published_at 做时间切分，再用 processed_tags 去重兜底
+    cutoff = state.latest_processed_published_at
     processed = set(state.processed_tags)
-    pending = [release for release in releases if release.tag_name and release.tag_name not in processed]
+
+    pending: list[ReleaseItem] = []
+    for release in releases:
+        if release.tag_name and release.tag_name in processed:
+            continue
+        if cutoff and release.published_at and release.published_at <= cutoff:
+            continue
+        pending.append(release)
+
     pending.sort(key=lambda item: item.published_at or "")
     return pending

@@ -10,7 +10,7 @@ Each selected release produces exactly one summary string.
 
 ## Requirements
 
-- Output in the primary language of the invocation instruction
+- Output in the primary language of the invocation instruction (zh → 中文, en → 英文)
 - Keep facts anchored to the release body
 - Keep the summary distilled and high-signal, but do not force it into a fixed length budget
 - Output JSON only. Each summary item must be a single non-empty string, not an object.
@@ -20,6 +20,7 @@ Each selected release produces exactly one summary string.
 - Prioritize the most important themes and expand when the release has multiple genuinely meaningful areas of change.
 - Summarize fixes and improvements clearly, not inflated counts or vague praise.
 - Focus on the most directly affected users or maintainers, and expand when that adds real decision value.
+- Summary text must be in the same language as the invocation instruction, regardless of the source release language
 - Do not translate the changelog line by line
 - Do not invent scope, quantities, or recommendations not clearly supported by the source
 - Avoid hype such as `大幅重构`, `显著提升`, `建议所有用户升级` unless the source clearly justifies it
