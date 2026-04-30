@@ -1,6 +1,7 @@
 ---
 name: github-release-analyzer
 description: Analyze GitHub repository releases and summarize release notes. Use when the user asks to analyze, summarize, review, or track the latest release or recent releases for a GitHub repo, including phrases like "分析最新 release", "latest release", "release 更新了什么", "汇总仓库 release", or requests to build a cron that tracks GitHub releases. Supports manual one-off analysis and cron-driven incremental tracking.
+homepage: https://github.com/stoner-byte/github-release-analyzer
 metadata:
   {"openclaw":{"emoji":"📦","requires":{"bins":["python3"]}}}
 ---
