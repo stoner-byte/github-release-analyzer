@@ -13,15 +13,22 @@ def _resolve_state_root() -> Path:
 
     Priority:
     1. GITHUB_RELEASE_ANALYZER_STATE_ROOT env var
-    2. Auto-detect from skill location (skill-root/state/)
+    2. Legacy workspace path (if existing state found, for backward compat)
+    3. Persistent global path (survives skill upgrades)
     """
     env = os.environ.get("GITHUB_RELEASE_ANALYZER_STATE_ROOT")
     if env:
         return Path(env)
-    # scripts/state_store.py -> .. -> skill root -> state/
-    script_dir = Path(__file__).resolve().parent
-    skill_root = script_dir.parent
-    return skill_root / "state"
+
+    home = Path.home()
+    legacy = home / ".openclaw" / "workspace" / "state" / "github-release-analyzer"
+    persistent = home / ".openclaw" / "state" / "github-release-analyzer"
+
+    # If legacy path has existing state files, keep using it
+    if legacy.exists() and any(legacy.iterdir()):
+        return legacy
+
+    return persistent
 
 
 DEFAULT_STATE_ROOT = _resolve_state_root()
