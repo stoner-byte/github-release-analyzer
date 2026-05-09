@@ -1,13 +1,30 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
 from models import RepoSpec, StateData
 
 
-DEFAULT_STATE_ROOT = Path.home() / ".openclaw" / "workspace" / "state" / "github-release-analyzer"
+def _resolve_state_root() -> Path:
+    """Resolve state storage directory.
+
+    Priority:
+    1. GITHUB_RELEASE_ANALYZER_STATE_ROOT env var
+    2. Auto-detect from skill location (skill-root/state/)
+    """
+    env = os.environ.get("GITHUB_RELEASE_ANALYZER_STATE_ROOT")
+    if env:
+        return Path(env)
+    # scripts/state_store.py -> .. -> skill root -> state/
+    script_dir = Path(__file__).resolve().parent
+    skill_root = script_dir.parent
+    return skill_root / "state"
+
+
+DEFAULT_STATE_ROOT = _resolve_state_root()
 
 
 def now_iso() -> str:
